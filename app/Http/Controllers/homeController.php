@@ -2,29 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Home;
-use App\Models\status_barang;
 use Illuminate\Http\Request;
+use App\Models\Karyawan;
+use App\Models\Barang;
+use App\Models\Transaksis;
+use App\Models\Statusbarang;
 
-class homeController extends Controller
+class homecontroller extends Controller
 {
-    public function data()
+    
+    public function index()
     {
-        $totalBarang = Home::sum('jumlah');
-        $barangBaik = Home::Where('id_status', '=', 'St001')->VALUE('jumlah');
-        $dataSemuaBarang = Home::select('barang.nama_barang', 'stat_barang.nama_status', 'data_barang.jumlah')
-            ->join('barang', 'data_barang.id_barang', '=', 'barang.id_barang')
-            ->join('stat_barang', 'data_barang.id_status', '=', 'stat_barang.id_status')
-            ->get();
+    $jumlah_karyawan =karyawan::all()->count();
+    $jumlah_barang = Barang::all()->count();
+    $jumlah_statusbarang = Statusbarang::all()->count();
+    $jumlah_transaksi = Transaksis::all()->count();
+    //return view('/home')->with('jumlah_karyawan',$jumlah_karyawan);
+    return view('index',compact('jumlah_karyawan','jumlah_barang','jumlah_statusbarang',
+                'jumlah_transaksi'));
+    }
 
-        // dd($totalBarang);
-        // dd($barangBaik);
-        // dd($dataSemuaBarang);
-        return view('home', [
-            'totalBarang' => $totalBarang,
-            'barangBaik' => $barangBaik,
-            'dataSemuaBarang' => $dataSemuaBarang
-
-        ]);
+    public function master()
+    {
+    $jumlah_karyawan =karyawan::all()->count();
+    $jumlah_barang = Barang::all()->count();
+    $jumlah_statusbarang = Statusbarang::all()->count();
+    $jumlah_transaksi = Transaksis::all()->count();
+    //return view('/home')->with('jumlah_karyawan',$jumlah_karyawan);
+    return view('home',compact('jumlah_karyawan','jumlah_barang','jumlah_statusbarang',
+                'jumlah_transaksi'));
     }
 }

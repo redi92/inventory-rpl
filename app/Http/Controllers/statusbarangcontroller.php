@@ -39,7 +39,7 @@ class statusbarangcontroller extends Controller
     public function update($id_status)
     {
         // mengambil data status berdasarkan id yang dipilih
-        $status = Karyawan::where('id_status', $id_status)->get();
+        $status = Statusbarang::where('id_status', $id_status)->get();
         // passing data produk yang didapat ke view edit.blade.php
         
         return redirect('/statusbarang');
@@ -59,4 +59,15 @@ class statusbarangcontroller extends Controller
         // alihkan halaman ke halaman produk
         return redirect('/statusbarang');
     }
+
+    public function cari(Request $request){
+        if($request->has('cari')){
+            $statusbarang = Statusbarang::where('id_barang','like','%'.$request->cari.'%')
+                    ->get();
+        }
+        else {
+            $statusbarang = Statusbarang::all();
+        }
+        return view('/statusbarang',['statusbarang'=>$statusbarang]);
+        }
 }
